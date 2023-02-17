@@ -1,8 +1,9 @@
 package co.coinvestor.oauthserver.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -10,25 +11,44 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableAuthorizationServer
 public class AuthServerConfig
         extends AuthorizationServerConfigurerAdapter {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+
+    private final CustomClientDetailsService customClientDetailsService;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory()
-                .withClient("client")
-                .secret("secret")
-                .redirectUris("http://localhost:9090/home")
-                .authorizedGrantTypes("authorization_code", "password", "refresh_token")
-                .scopes("a","b");
+        clients.withClientDetails(customClientDetailsService);
+
+//        clients.inMemory()
+//                .withClient("client2")
+//                .secret(passwordEncoder.encode("secret"))
+//                .redirectUris("http://localhost:9090/home")
+//                .authorizedGrantTypes("authorization_code", "password", "refresh_token")
+//                .scopes("ADMIN", "USER")
+//                .and()
+//                .withClient("resourceserver")
+//                .secret(passwordEncoder.encode("resourceserversecret"));
     }
 
 //    @Override
 //    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+//            clients.inMemory()
+//                    .withClient("client2")
+//                .secret(passwordEncoder.encode("secret"))
+//            .redirectUris("http://localhost:9090/home")
+//                .authorizedGrantTypes("authorization_code", "password", "refresh_token")
+//                .scopes("ADMIN","USER")
+//                .and()
+//                .withClient("resourceserver")
+//                .secret(passwordEncoder.encode("resourceserversecret"));
+//
 //        var service = new InMemoryClientDetailsService();
 //
 //        var cd = new BaseClientDetails();
