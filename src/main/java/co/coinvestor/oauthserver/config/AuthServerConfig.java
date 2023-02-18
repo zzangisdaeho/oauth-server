@@ -1,14 +1,21 @@
 package co.coinvestor.oauthserver.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.approval.ApprovalStore;
+import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+
+import javax.sql.DataSource;
 
 @Configuration
 @RequiredArgsConstructor
@@ -20,56 +27,44 @@ public class AuthServerConfig
 
     private final CustomClientDetailsService customClientDetailsService;
 
-    private final PasswordEncoder passwordEncoder;
+    private final DataSource dataSource;
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.withClientDetails(customClientDetailsService);
-
-//        clients.inMemory()
-//                .withClient("client2")
-//                .secret(passwordEncoder.encode("secret"))
-//                .redirectUris("http://localhost:9090/home")
-//                .authorizedGrantTypes("authorization_code", "password", "refresh_token")
-//                .scopes("ADMIN", "USER")
-//                .and()
-//                .withClient("resourceserver")
-//                .secret(passwordEncoder.encode("resourceserversecret"));
     }
-
-//    @Override
-//    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-//            clients.inMemory()
-//                    .withClient("client2")
-//                .secret(passwordEncoder.encode("secret"))
-//            .redirectUris("http://localhost:9090/home")
-//                .authorizedGrantTypes("authorization_code", "password", "refresh_token")
-//                .scopes("ADMIN","USER")
-//                .and()
-//                .withClient("resourceserver")
-//                .secret(passwordEncoder.encode("resourceserversecret"));
-//
-//        var service = new InMemoryClientDetailsService();
-//
-//        var cd = new BaseClientDetails();
-//        cd.setClientId("client");
-//        cd.setClientSecret("secret");
-//        cd.setScope(List.of("read"));
-//        cd.setAuthorizedGrantTypes(List.of("password"));
-//
-//        service.setClientDetailsStore(Map.of("client", cd));
-//
-//        clients.withClientDetails(service);
-//    }
-
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        endpoints.authenticationManager(authenticationManager);
+        endpoints
+                .authenticationManager(authenticationManager)
+                .tokenStore(tokenStore())
+                .tokenServices(tokenServices())
+                .approvalStore(approvalStore());
     }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) {
         security.checkTokenAccess("isAuthenticated()");
+    }
+
+    @Bean
+    public TokenStore tokenStore() {
+        return new JdbcTokenStore(dataSource);
+    }
+
+    @Bean
+    public DefaultTokenServices tokenServices() {
+        DefaultTokenServices tokenServices = new DefaultTokenServices();
+        tokenServices.setTokenStore(tokenStore());
+        tokenServices.setSupportRefreshToken(true);
+        tokenServices.setAccessTokenValiditySeconds(3600); // set access token to expire after 1 hour
+        tokenServices.setRefreshTokenValiditySeconds(86400); // set refresh token to expire after 1 day
+        return tokenServices;
+    }
+
+    @Bean
+    public ApprovalStore approvalStore() {
+        return new JdbcApprovalStore(dataSource);
     }
 }

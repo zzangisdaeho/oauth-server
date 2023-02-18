@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface ClientEntityRepository extends JpaRepository<ClientEntity, Long> {
 
-    @EntityGraph(attributePaths = {"grantTypes", "scopes"})
+    @EntityGraph(attributePaths = {"grantTypes", "scopes", "redirectUris"})
     Optional<ClientEntity> findByClientId(String clientId);
 }

@@ -6,13 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
 @Getter
-public class AuthorizeEntity {
+public class AuthorizeEntity implements Serializable {
 
     @Id
     @Enumerated(EnumType.STRING)
