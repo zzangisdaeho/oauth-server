@@ -18,8 +18,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService uds() {
         var uds = new InMemoryUserDetailsManager();
 
-        var u = User.withUsername("john")
-                .password("12345")
+        var u = User.withUsername("issac.kim@bclabs.com")
+                .password("pass")
                 .authorities("a","b","c")
                 .build();
 
