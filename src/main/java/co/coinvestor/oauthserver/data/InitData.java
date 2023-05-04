@@ -30,15 +30,15 @@ public class InitData {
     @Order(1)
     @EventListener(value = ApplicationReadyEvent.class)
     public void initAuthorities(){
-        Set<AuthorizeEntity.Authorizations> AllAuthorizations = Arrays.stream(AuthorizeEntity.Authorizations.values())
+        Set<AuthorizeEntity.Authorizations> allAuthorizations = Arrays.stream(AuthorizeEntity.Authorizations.values())
                 .collect(Collectors.toSet());
 
         List<AuthorizeEntity> alreadyExistAuthorizations = authorizeEntityRepository.findAll();
 
-        AllAuthorizations.removeAll(alreadyExistAuthorizations.stream().map(AuthorizeEntity::getAuthorization)
+        allAuthorizations.removeAll(alreadyExistAuthorizations.stream().map(AuthorizeEntity::getAuthorization)
                 .collect(Collectors.toSet()));
 
-        List<AuthorizeEntity> addAuthorizeEntityList = AllAuthorizations.stream().map(AuthorizeEntity::new)
+        List<AuthorizeEntity> addAuthorizeEntityList = allAuthorizations.stream().map(AuthorizeEntity::new)
                 .collect(Collectors.toList());
 
         authorizeEntityRepository.saveAll(addAuthorizeEntityList);
@@ -79,7 +79,7 @@ public class InitData {
     }
 
     @Order(4)
-//    @EventListener(value = ApplicationReadyEvent.class)
+    @EventListener(value = ApplicationReadyEvent.class)
     public void initUserData(){
         List<AuthorizeEntity> all = authorizeEntityRepository.findAll();
 
@@ -92,7 +92,7 @@ public class InitData {
     }
 
     @Order(5)
-//    @EventListener(value = ApplicationReadyEvent.class)
+    @EventListener(value = ApplicationReadyEvent.class)
     public void initCredentialData(){
         List<ScopeEntity> allScopes = scopeEntityRepository.findAll();
         List<GrantTypeEntity> allGrantTypes = grantTypeEntityRepository.findAll();

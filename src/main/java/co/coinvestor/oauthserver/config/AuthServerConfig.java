@@ -40,11 +40,14 @@ public class AuthServerConfig
                 .authenticationManager(authenticationManager)
                 .tokenStore(tokenStore())
                 .tokenServices(tokenServices())
-                .approvalStore(approvalStore());
+                .approvalStore(approvalStore())
+                .pathMapping("/oauth/confirm_access", "/custom/oauth/approve")
+        ;
     }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) {
+        //check_token endpoint (credential 필수)
         security.checkTokenAccess("isAuthenticated()");
     }
 

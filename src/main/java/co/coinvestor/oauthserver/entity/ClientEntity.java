@@ -25,6 +25,7 @@ public class ClientEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CLIENT_SEQ_GENERATOR")
     private Long id;
 
+    @Column(unique = true)
     private String clientId;
 
     private String clientSecret;
@@ -36,11 +37,11 @@ public class ClientEntity {
     )
     private Set<String> redirectUris = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "client_granttype_table")
     private Set<GrantTypeEntity> grantTypes = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "client_scope_table")
     private Set<ScopeEntity> scopes = new HashSet<>();
 
