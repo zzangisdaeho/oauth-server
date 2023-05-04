@@ -79,7 +79,7 @@ public class InitData {
     }
 
     @Order(4)
-    @EventListener(value = ApplicationReadyEvent.class)
+//    @EventListener(value = ApplicationReadyEvent.class)
     public void initUserData(){
         List<AuthorizeEntity> all = authorizeEntityRepository.findAll();
 
@@ -92,7 +92,7 @@ public class InitData {
     }
 
     @Order(5)
-    @EventListener(value = ApplicationReadyEvent.class)
+//    @EventListener(value = ApplicationReadyEvent.class)
     public void initCredentialData(){
         List<ScopeEntity> allScopes = scopeEntityRepository.findAll();
         List<GrantTypeEntity> allGrantTypes = grantTypeEntityRepository.findAll();

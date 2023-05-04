@@ -12,10 +12,12 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 
 @Configuration
 @RequiredArgsConstructor
@@ -29,6 +31,8 @@ public class AuthServerConfig
 
     private final DataSource dataSource;
 
+    private final CustomTokenEnhancer customTokenEnhancer;
+
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.withClientDetails(customClientDetailsService);
@@ -36,6 +40,7 @@ public class AuthServerConfig
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+
         endpoints
                 .authenticationManager(authenticationManager)
                 .tokenStore(tokenStore())
@@ -58,11 +63,17 @@ public class AuthServerConfig
 
     @Bean
     public DefaultTokenServices tokenServices() {
+
         DefaultTokenServices tokenServices = new DefaultTokenServices();
         tokenServices.setTokenStore(tokenStore());
         tokenServices.setSupportRefreshToken(true);
         tokenServices.setAccessTokenValiditySeconds(3600); // set access token to expire after 1 hour
         tokenServices.setRefreshTokenValiditySeconds(86400); // set refresh token to expire after 1 day
+
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(customTokenEnhancer));
+        tokenServices.setTokenEnhancer(tokenEnhancerChain);
+
         return tokenServices;
     }
 
