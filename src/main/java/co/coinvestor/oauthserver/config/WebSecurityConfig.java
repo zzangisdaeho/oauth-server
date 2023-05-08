@@ -30,8 +30,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .permitAll()
         ;
+
         http.logout().logoutSuccessUrl("/logout");
-        http.authorizeRequests().mvcMatchers("/error/**").permitAll().anyRequest().authenticated();
+        http.authorizeRequests()
+                .mvcMatchers("/error/**").permitAll()
+                .mvcMatchers("/test/**").permitAll()
+                .mvcMatchers("/favicon.ico").permitAll()
+                .anyRequest().authenticated();
 //        http.csrf().disable();
 //        http.httpBasic();
 //        http.authorizeRequests().anyRequest().permitAll();
