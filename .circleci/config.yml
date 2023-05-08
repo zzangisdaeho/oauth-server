@@ -1,0 +1,49 @@
+version: 2.1
+orbs:
+  aws-ecr: circleci/aws-ecr@7.0.0
+  aws-ecs: circleci/aws-ecs@2.1.0
+  slack: circleci/slack@4.4.4
+jobs:
+  build-and-deploy:
+    machine: # executor type
+      image: ubuntu-2204:2022.04.2
+    parameters:
+      cluster-name:
+        type: string
+      repo:
+        type: string
+      environment:
+        type: string
+      dockerfile:
+        type: string
+    steps:
+      - checkout
+      - aws-ecr/build-and-push-image:
+          dockerfile: << parameters.dockerfile >>
+          create-repo: true
+          repo: << parameters.repo >>
+          tag: << parameters.environment >>
+      - aws-ecs/update-service:
+          cluster-name: << parameters.cluster-name >>
+          container-image-name-updates: "container=<< parameters.cluster-name >>-<< parameters.repo >>-<< parameters.environment >>,tag=<< parameters.environment >>"
+          family: << parameters.cluster-name >>-<< parameters.repo >>-<< parameters.environment >>
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+workflows:
+  build-and-deploy:
+    jobs:
+      # dev
+      - build-and-deploy:
+          name: common-oauth-dev
+          cluster-name: common
+          repo: common-oauth
+          environment: dev
+          dockerfile: Dockerfile
+          filters:
+            branches:
+              only: develop
+
