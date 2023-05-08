@@ -1,3 +1,6 @@
+service:
+  name: oauth-server
+
 logging:
   pattern:
     dateformat: "yyyy-MM-dd HH:mm:ss.SSS"
