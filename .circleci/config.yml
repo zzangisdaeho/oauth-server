@@ -25,8 +25,8 @@ jobs:
           tag: << parameters.environment >>
       - aws-ecs/update-service:
           cluster-name: << parameters.cluster-name >>
-          container-image-name-updates: "container=<< parameters.cluster-name >>-<< parameters.repo >>-<< parameters.environment >>,tag=<< parameters.environment >>"
-          family: << parameters.cluster-name >>-<< parameters.repo >>-<< parameters.environment >>
+          container-image-name-updates: "container=<< parameters.repo >>-<< parameters.environment >>,tag=<< parameters.environment >>"
+          family: << parameters.repo >>-<< parameters.environment >>
       - slack/notify:
           event: pass
           template: success_tagged_deploy_1
