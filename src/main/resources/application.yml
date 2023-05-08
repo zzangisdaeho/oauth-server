@@ -4,3 +4,6 @@ service:
 logging:
   pattern:
     dateformat: "yyyy-MM-dd HH:mm:ss.SSS"
+
+server:
+  port: 80
