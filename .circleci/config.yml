@@ -47,3 +47,25 @@ workflows:
             branches:
               only: develop
 
+      # stg
+      - build-and-deploy:
+          name: common-oauth-stg
+          cluster-name: common
+          repo: common-oauth
+          environment: stg
+          dockerfile: Dockerfile
+          filters:
+            branches:
+              only: staging
+
+      # prod
+#      - build-and-deploy:
+#          name: common-oauth-prod
+#          cluster-name: common
+#          repo: common-oauth
+#          environment: prod
+#          dockerfile: Dockerfile
+#          filters:
+#            branches:
+#              only: master
+
