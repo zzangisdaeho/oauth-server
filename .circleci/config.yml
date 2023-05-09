@@ -59,13 +59,13 @@ workflows:
               only: staging
 
       # prod
-#      - build-and-deploy:
-#          name: common-oauth-prod
-#          cluster-name: common
-#          repo: common-oauth
-#          environment: prod
-#          dockerfile: Dockerfile
-#          filters:
-#            branches:
-#              only: master
+      - build-and-deploy:
+          name: common-oauth-prod
+          cluster-name: common
+          repo: common-oauth
+          environment: prod
+          dockerfile: Dockerfile
+          filters:
+            branches:
+              only: master
 
