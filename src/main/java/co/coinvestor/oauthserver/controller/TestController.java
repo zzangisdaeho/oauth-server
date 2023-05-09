@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @GetMapping("/healthcheck")
-    public void healthCheck(){
-
+    public String healthCheck(){
+        return "HEALTH";
     }
 
     @PostMapping("/post")

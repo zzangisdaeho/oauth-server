@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/test/**").permitAll()
                 .mvcMatchers("/favicon.ico").permitAll()
                 .anyRequest().authenticated();
-//        http.csrf().disable();
+        http.csrf().disable();
 //        http.httpBasic();
 //        http.authorizeRequests().anyRequest().permitAll();
     }
