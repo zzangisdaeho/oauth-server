@@ -21,7 +21,7 @@ spring:
     initialization-mode: always
 
   rabbitmq:
-    host: b-a6b5a36b-e634-4535-b4a3-729ecd1dad13.mq.ap-northeast-2.amazonaws.com
+    host: b-4363e5d5-5370-4482-8696-4043777db2db.mq.ap-northeast-2.amazonaws.com
     port: 5671
     username: coinvestor
     password: LrwJxH@qcQDKCG^J
