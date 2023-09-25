@@ -1,10 +1,6 @@
 package co.coinvestor.oauthserver.config;
 
-import co.coinvestor.oauthserver.entity.UserEntity;
-import co.coinvestor.oauthserver.repository.UserEntityRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;

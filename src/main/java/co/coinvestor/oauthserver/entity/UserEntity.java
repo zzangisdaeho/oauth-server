@@ -16,14 +16,15 @@ import static co.coinvestor.oauthserver.entity.AuthorizeEntity.Authorizations.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@SequenceGenerator(
-        name = "USER_SEQ_GENERATOR"
-        , sequenceName = "USER_SEQ"
-        , allocationSize = 1
-)
+//@SequenceGenerator(
+//        name = "USER_SEQ_GENERATOR"
+//        , sequenceName = "USER_SEQ"
+//        , allocationSize = 1
+//)
 public class UserEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ_GENERATOR")
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable=false, unique=true)

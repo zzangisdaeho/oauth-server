@@ -14,15 +14,16 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@SequenceGenerator(
-        name = "CLIENT_SEQ_GENERATOR"
-        , sequenceName = "CLIENT_SEQ"
-        , allocationSize = 1
-)
+//@SequenceGenerator(
+//        name = "CLIENT_SEQ_GENERATOR"
+//        , sequenceName = "CLIENT_SEQ"
+//        , allocationSize = 1
+//)
 public class ClientEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CLIENT_SEQ_GENERATOR")
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CLIENT_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
