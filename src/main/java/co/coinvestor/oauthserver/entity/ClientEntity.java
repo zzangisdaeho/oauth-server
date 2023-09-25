@@ -38,7 +38,7 @@ public class ClientEntity {
     private Set<String> redirectUris = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "client_granttype_table")
+    @JoinTable(name = "client_grant_type_table")
     private Set<GrantTypeEntity> grantTypes = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)

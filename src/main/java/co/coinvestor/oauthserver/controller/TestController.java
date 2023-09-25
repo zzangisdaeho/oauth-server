@@ -14,9 +14,4 @@ public class TestController {
     public String healthCheck(){
         return "HEALTH";
     }
-
-    @PostMapping("/post")
-    public String postCheck(){
-        return "POST";
-    }
 }

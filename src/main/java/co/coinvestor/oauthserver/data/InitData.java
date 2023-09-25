@@ -87,7 +87,7 @@ public class InitData {
 
             UserEntity issac = UserEntity.builder()
                     .authorizes(new HashSet<>(all))
-                    .email("issac.kim@bclabs.com")
+                    .email("issac.kim@bclabs.co.kr")
                     .password(passwordEncoder.encode("pass"))
                     .build();
             userEntityRepository.save(issac);
@@ -120,9 +120,4 @@ public class InitData {
         }
     }
 
-//    @Order(5)
-//    @EventListener(value = ApplicationReadyEvent.class)
-//    public void deleteTest(){
-//        log.error("slack send test");
-//    }
 }
