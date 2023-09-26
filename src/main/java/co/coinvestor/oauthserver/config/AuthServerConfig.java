@@ -80,7 +80,7 @@ public class AuthServerConfig
                 //check_token endpoint (credential 필수)
                 .checkTokenAccess("isAuthenticated()")
                 //token_key endpoint (credential 필수)
-                .tokenKeyAccess("permitAll()");
+                .tokenKeyAccess("isAuthenticated()");
     }
 
     @Bean

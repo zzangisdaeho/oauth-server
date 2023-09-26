@@ -20,7 +20,7 @@ public class AuthorizeEntity implements Serializable {
     private Authorizations authorization;
 
     public enum Authorizations {
-        USER, ADMIN
+        USER, ADMIN, SPOT, ALGO_NOVICE, ALGO_PRO, TRADER0, TRADER1, TRADER2, AFFLIATED0, AFFLIATED1, AFFLIATED2
     }
 
 }
