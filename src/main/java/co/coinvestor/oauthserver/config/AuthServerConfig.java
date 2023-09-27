@@ -13,9 +13,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
-import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.*;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -112,8 +110,16 @@ public class AuthServerConfig
 
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        var converter = new JwtAccessTokenConverter();
+//        var converter = new JwtAccessTokenConverter();
+        var converter = new CustomJwtAccessTokenConverter();
 
+        //json 에서 user_name을 제거하기 위한 CustomUserAuthenticationConverter 등록
+        DefaultAccessTokenConverter accessTokenConverter = new DefaultAccessTokenConverter();
+        UserAuthenticationConverter userAuthenticationConverter = new CustomUserAuthenticationConverter();
+        accessTokenConverter.setUserTokenConverter(userAuthenticationConverter);
+        converter.setAccessTokenConverter(accessTokenConverter);
+
+        //RSA키 등록
         KeyStoreKeyFactory keyStoreKeyFactory =
                 new KeyStoreKeyFactory(
                         new ClassPathResource(privateKey),

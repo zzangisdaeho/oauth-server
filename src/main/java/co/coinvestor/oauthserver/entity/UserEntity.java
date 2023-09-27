@@ -29,10 +29,6 @@ public class UserEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus = UserStatus.ACTIVE;
 
-    public enum UserStatus{
-        ACTIVE, INACTIVE, DISABLED
-    }
-
     @ManyToMany
     @JoinTable(name = "user_authorization_table")
     private Set<AuthorizeEntity> authorizes = new HashSet<>();
@@ -40,12 +36,11 @@ public class UserEntity implements Serializable {
     //추천받아서 들어온 사람
     @OneToMany(mappedBy = "parentUser", cascade = CascadeType.PERSIST)
     private List<UserEntity> childUserList = new ArrayList<>();
-
     // 추천인
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_user_id")
     private UserEntity parentUser;
-
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserDetailEntity userDetail = new UserDetailEntity(this.id, this, 0, 0 ,0, new HashSet<>());
 
@@ -58,6 +53,10 @@ public class UserEntity implements Serializable {
                 new Level1(),
                 new Level2()
         };
+    }
+
+    public enum UserStatus{
+        ACTIVE, INACTIVE, DISABLED
     }
 
     @Builder
