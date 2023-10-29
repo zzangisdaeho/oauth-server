@@ -1,0 +1,46 @@
+spring:
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+
+  datasource:
+    url: jdbc:mysql://playv-stg.cfzj3dhmtjiv.ap-northeast-2.rds.amazonaws.com:3306/oauth?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&characterEncoding=UTF8&autoReconnect=true
+    username: scheduler-quant
+    password: LrwJxH@qcQDKCG^J
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 5000
+      idle-timeout: 5000
+      maximum-pool-size: 10
+      minimum-idle: 3
+      connection-test-query: SELECT 0
+    initialization-mode: always
+
+  rabbitmq:
+    host: b-4363e5d5-5370-4482-8696-4043777db2db.mq.ap-northeast-2.amazonaws.com
+    port: 5671
+    username: coinvestor
+    password: LrwJxH@qcQDKCG^J
+    ssl:
+      enabled: true
+
+  redis:
+    host: playv-stg.akccz1.0001.apn2.cache.amazonaws.com
+    port: 6379
+    database: 11
+
+service:
+  name: oauth-server-stg
+
+logging:
+  slack:
+    webhook-uri: https://hooks.slack.com/services/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
+    channel: oauth-stg
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework : debug

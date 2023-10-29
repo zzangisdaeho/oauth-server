@@ -14,17 +14,19 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@SequenceGenerator(
-        name = "CLIENT_SEQ_GENERATOR"
-        , sequenceName = "CLIENT_SEQ"
-        , allocationSize = 1
-)
+//@SequenceGenerator(
+//        name = "CLIENT_SEQ_GENERATOR"
+//        , sequenceName = "CLIENT_SEQ"
+//        , allocationSize = 1
+//)
 public class ClientEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CLIENT_SEQ_GENERATOR")
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CLIENT_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String clientId;
 
     private String clientSecret;
@@ -36,11 +38,11 @@ public class ClientEntity {
     )
     private Set<String> redirectUris = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "client_granttype_table")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "client_grant_type_table")
     private Set<GrantTypeEntity> grantTypes = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "client_scope_table")
     private Set<ScopeEntity> scopes = new HashSet<>();
 

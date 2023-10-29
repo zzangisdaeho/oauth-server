@@ -22,6 +22,6 @@ public class ScopeEntity {
     private SCOPES scope;
 
     public enum SCOPES{
-        USER, ADMIN
+        DEVOPS, QUANT, SPOT
     }
 }

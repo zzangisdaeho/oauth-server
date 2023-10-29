@@ -1,0 +1,46 @@
+spring:
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+
+  datasource:
+    url: jdbc:mysql://playv-prod.cfzj3dhmtjiv.ap-northeast-2.rds.amazonaws.com:3306/oauth?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&characterEncoding=UTF8&autoReconnect=true
+    username: quant-api
+    password: mq*3A4x5yXEQz4DQ
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 5000
+      idle-timeout: 5000
+      maximum-pool-size: 10
+      minimum-idle: 3
+      connection-test-query: SELECT 0
+    initialization-mode: always
+
+  rabbitmq:
+    host: b-59c28b81-c379-46fc-99e2-35534160d071.mq.ap-northeast-2.amazonaws.com
+    port: 5671
+    username: coinvestor
+    password: mq*3A4x5yXEQz4DQ
+    ssl:
+      enabled: true
+
+  redis:
+    host: playv-prod.akccz1.0001.apn2.cache.amazonaws.com
+    port: 6379
+    database: 11
+
+service:
+  name: oauth-server-prod
+
+logging:
+  slack:
+    webhook-uri: https://hooks.slack.com/services/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
+    channel: oauth-prod
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework : debug

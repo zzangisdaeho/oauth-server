@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>OAuth Approval</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #approval-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin: 0 0 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        input[type="submit"] {
+            width: 48%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div id="approval-container">
+    <h1>Approve Scopes</h1>
+    <form th:action="@{/oauth/authorize}" method="post">
+        <ul th:if="${authorizationRequest.scope}">
+            <li th:each="scope : ${authorizationRequest.scope}">
+                <input type="checkbox" th:name="'scope.' + ${scope}" value="true" checked="checked" th:id="'scope-' + ${scope}"/>
+                <label th:for="'scope-' + ${scope}" th:text="${scope}"></label>
+            </li>
+        </ul>
+        <div class="actions">
+            <input type="submit" value="Approve"/>
+            <input type="submit" name="deny" value="Deny" onclick="document.getElementById('user_oauth_approval').value = 'false';"/>
+            <input type="hidden" id="user_oauth_approval" name="user_oauth_approval" value="true"/>
+        </div>
+    </form>
+</div>
+</body>
+</html>

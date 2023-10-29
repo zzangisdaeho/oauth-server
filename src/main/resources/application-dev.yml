@@ -2,7 +2,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
@@ -13,25 +13,15 @@ spring:
     password: 1234
     initialization-mode: always
 
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: test
-    password: 1234
-
-  redis:
-    host: localhost
-    port: 6379
-    database: 11
-
 service:
-  name: oauth-server-local
+  name: oauth-server-dev
 
 logging:
   slack:
     webhook-uri: https://hooks.slack.com/services/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
-    channel: oauth-local
+    channel: oauth-dev
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.springframework : debug
+    org.apache.coyote.http11: DEBUG

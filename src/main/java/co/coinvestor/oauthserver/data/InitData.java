@@ -3,6 +3,7 @@ package co.coinvestor.oauthserver.data;
 import co.coinvestor.oauthserver.entity.*;
 import co.coinvestor.oauthserver.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
@@ -17,10 +18,10 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class InitData {
 
     private final UserEntityRepository userEntityRepository;
-
     private final AuthorizeEntityRepository authorizeEntityRepository;
     private final GrantTypeEntityRepository grantTypeEntityRepository;
     private final ScopeEntityRepository scopeEntityRepository;
@@ -30,15 +31,15 @@ public class InitData {
     @Order(1)
     @EventListener(value = ApplicationReadyEvent.class)
     public void initAuthorities(){
-        Set<AuthorizeEntity.Authorizations> AllAuthorizations = Arrays.stream(AuthorizeEntity.Authorizations.values())
+        Set<AuthorizeEntity.Authorizations> allAuthorizations = Arrays.stream(AuthorizeEntity.Authorizations.values())
                 .collect(Collectors.toSet());
 
         List<AuthorizeEntity> alreadyExistAuthorizations = authorizeEntityRepository.findAll();
 
-        AllAuthorizations.removeAll(alreadyExistAuthorizations.stream().map(AuthorizeEntity::getAuthorization)
+        allAuthorizations.removeAll(alreadyExistAuthorizations.stream().map(AuthorizeEntity::getAuthorization)
                 .collect(Collectors.toSet()));
 
-        List<AuthorizeEntity> addAuthorizeEntityList = AllAuthorizations.stream().map(AuthorizeEntity::new)
+        List<AuthorizeEntity> addAuthorizeEntityList = allAuthorizations.stream().map(AuthorizeEntity::new)
                 .collect(Collectors.toList());
 
         authorizeEntityRepository.saveAll(addAuthorizeEntityList);
@@ -79,46 +80,44 @@ public class InitData {
     }
 
     @Order(4)
-//    @EventListener(value = ApplicationReadyEvent.class)
+    @EventListener(value = ApplicationReadyEvent.class)
     public void initUserData(){
-        List<AuthorizeEntity> all = authorizeEntityRepository.findAll();
+        if(userEntityRepository.findAll().size()==0){
+            List<AuthorizeEntity> all = authorizeEntityRepository.findAll();
 
-        UserEntity issac = UserEntity.builder()
-                .authorizes(new HashSet<>(all))
-                .email("issac.kim@bclabs.com")
-                .password(passwordEncoder.encode("pass"))
-                .build();
-        userEntityRepository.save(issac);
+            UserEntity issac = UserEntity.builder()
+                    .authorizes(new HashSet<>(all))
+                    .email("issac.kim@bclabs.co.kr")
+                    .password(passwordEncoder.encode("pass"))
+                    .build();
+            userEntityRepository.save(issac);
+        }
+
     }
 
     @Order(5)
-//    @EventListener(value = ApplicationReadyEvent.class)
+    @EventListener(value = ApplicationReadyEvent.class)
     public void initCredentialData(){
-        List<ScopeEntity> allScopes = scopeEntityRepository.findAll();
-        List<GrantTypeEntity> allGrantTypes = grantTypeEntityRepository.findAll();
+        if(clientEntityRepository.findAll().size()==0){
+            List<ScopeEntity> allScopes = scopeEntityRepository.findAll();
+            List<GrantTypeEntity> allGrantTypes = grantTypeEntityRepository.findAll();
 
-        ClientEntity testClient = ClientEntity.builder()
-                .clientId("client")
-                .clientSecret(passwordEncoder.encode("secret"))
-                .grantTypes(new HashSet<>(allGrantTypes))
-                .scopes(new HashSet<>(allScopes))
-                .redirectUris(Set.of("http://localhost:9090/home", "http://localhost:9091/home"))
-                .build();
+            ClientEntity testClient = ClientEntity.builder()
+                    .clientId("client")
+                    .clientSecret(passwordEncoder.encode("secret"))
+                    .grantTypes(new HashSet<>(allGrantTypes))
+                    .scopes(new HashSet<>(allScopes))
+                    .redirectUris(Set.of("http://localhost:9090/home", "http://localhost:9091/home"))
+                    .build();
 
-        ClientEntity resourceServerClient = ClientEntity.builder()
-                .clientId("resourceserver")
-                .clientSecret(passwordEncoder.encode("resourceserversecret"))
-                .build();
+            ClientEntity resourceServerClient = ClientEntity.builder()
+                    .clientId("resourceserver")
+                    .clientSecret(passwordEncoder.encode("resourceserversecret"))
+                    .build();
 
-
-        clientEntityRepository.save(testClient);
-        clientEntityRepository.save(resourceServerClient);
+            clientEntityRepository.save(testClient);
+            clientEntityRepository.save(resourceServerClient);
+        }
     }
 
-
-//    @EventListener(value = ApplicationReadyEvent.class)
-//    public void deleteTest(){
-//        UserEntity userEntity = userEntityRepository.findById(1L).get();
-//        userEntityRepository.delete(userEntity);
-//    }
 }
