@@ -110,14 +110,14 @@ public class AuthServerConfig
 
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
-//        var converter = new JwtAccessTokenConverter();
-        var converter = new CustomJwtAccessTokenConverter();
+        var converter = new JwtAccessTokenConverter();
 
-        //json 에서 user_name을 제거하기 위한 CustomUserAuthenticationConverter 등록
-        DefaultAccessTokenConverter accessTokenConverter = new DefaultAccessTokenConverter();
-        UserAuthenticationConverter userAuthenticationConverter = new CustomUserAuthenticationConverter();
-        accessTokenConverter.setUserTokenConverter(userAuthenticationConverter);
-        converter.setAccessTokenConverter(accessTokenConverter);
+//        var converter = new CustomJwtAccessTokenConverter();
+//        //json 에서 user_name을 제거하기 위한 CustomUserAuthenticationConverter 등록
+//        DefaultAccessTokenConverter accessTokenConverter = new DefaultAccessTokenConverter();
+//        UserAuthenticationConverter userAuthenticationConverter = new CustomUserAuthenticationConverter();
+//        accessTokenConverter.setUserTokenConverter(userAuthenticationConverter);
+//        converter.setAccessTokenConverter(accessTokenConverter);
 
         //RSA키 등록
         KeyStoreKeyFactory keyStoreKeyFactory =

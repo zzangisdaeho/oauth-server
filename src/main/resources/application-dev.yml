@@ -2,36 +2,16 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
 
   datasource:
-    url: jdbc:mysql://playv-dev.cfzj3dhmtjiv.ap-northeast-2.rds.amazonaws.com:3306/oauth?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&characterEncoding=UTF8&autoReconnect=true
-    username: scheduler-quant
-    password: LrwJxH@qcQDKCG^J
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      connection-timeout: 5000
-      idle-timeout: 5000
-      maximum-pool-size: 10
-      minimum-idle: 3
-      connection-test-query: SELECT 0
+    url: jdbc:mysql://localhost:3306/oauth?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: 1234
     initialization-mode: always
-
-  rabbitmq:
-    host: b-7a159ff2-ab68-4089-85fb-ba38e9f730df.mq.ap-northeast-2.amazonaws.com
-    port: 5671
-    username: coinvestor
-    password: LrwJxH@qcQDKCG^J
-    ssl:
-      enabled: true
-
-  redis:
-    host: playv-dev.akccz1.0001.apn2.cache.amazonaws.com
-    port: 6379
-    database: 11
 
 service:
   name: oauth-server-dev
