@@ -29,13 +29,4 @@ public class UserDetailEntity {
     private int traderLevel;
     private int affiliateLevel;
 
-    @ElementCollection(targetClass = Badge.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_detail_badges", joinColumns = @JoinColumn(name = "user_detail_id"))
-    @Enumerated(EnumType.STRING)
-    @Builder.Default
-    private Set<Badge> badges = new HashSet<>();
-
-    public enum Badge {
-        BADGE1, BADGE2;
-    }
 }

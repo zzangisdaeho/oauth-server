@@ -42,7 +42,7 @@ public class UserEntity implements Serializable {
     @JoinColumn(name = "parent_user_id")
     private UserEntity parentUser;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private UserDetailEntity userDetail = new UserDetailEntity(this.id, this, 0, 0 ,0, new HashSet<>());
+    private UserDetailEntity userDetail = new UserDetailEntity(this.id, this, 0, 0 ,0);
 
     @Transient
     private static final LevelAuthorizationInject<Authorizations>[] LEVELS;
@@ -67,7 +67,7 @@ public class UserEntity implements Serializable {
         this.authorizes = authorizes != null ? authorizes : new HashSet<>();
         this.childUserList = childUserList != null ? childUserList : new ArrayList<>();
         this.parentUser = parentUser;
-        this.userDetail = userDetail != null ? userDetail : new UserDetailEntity(this.id, this, 0, 0, 0, new HashSet<>());
+        this.userDetail = userDetail != null ? userDetail : new UserDetailEntity(this.id, this, 0, 0, 0);
     }
 
     public Set<Authorizations> getEffectiveAuthorizations() {
